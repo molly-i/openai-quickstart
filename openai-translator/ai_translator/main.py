@@ -7,6 +7,8 @@ from utils import ArgumentParser, ConfigLoader, LOG
 from model import GLMModel, OpenAIModel
 from translator import PDFTranslator
 
+# --model_type OpenAIModel --openai_api_key $OPENAI_API_KEY --file_format markdown --book tests/test.pdf --openai_model gpt-3.5-turbo --target_language 日文
+
 if __name__ == "__main__":
     argument_parser = ArgumentParser()
     args = argument_parser.parse_arguments()
@@ -22,6 +24,9 @@ if __name__ == "__main__":
     pdf_file_path = args.book if args.book else config['common']['book']
     file_format = args.file_format if args.file_format else config['common']['file_format']
 
+    # 增加支持翻译的目标语言
+    target_language = args.target_language if args.target_language else config['common']['target_language']
+
     # 实例化 PDFTranslator 类，并调用 translate_pdf() 方法
     translator = PDFTranslator(model)
-    translator.translate_pdf(pdf_file_path, file_format)
+    translator.translate_pdf(pdf_file_path, file_format, target_language=target_language)
